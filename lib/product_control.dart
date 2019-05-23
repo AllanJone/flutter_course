@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class ProductControl extends StatelessWidget {
   final Function addProduct;
 
-  ProductControl({this.addProduct}) : assert(addProduct != null);
+  ProductControl({this.addProduct});
 
   @override
   Widget build(BuildContext context) {
@@ -11,7 +11,10 @@ class ProductControl extends StatelessWidget {
         //color: Theme.of(context).primaryColor,
         child: Text('Add Product'),
         onPressed: () {
-          addProduct({'title': 'Scarlet Witch', 'image': 'assets/Elizabeth_Olsen.jpg'});
+          addProduct({
+            'title': 'Scarlet Witch',
+            'image': 'assets/Elizabeth_Olsen.jpg'
+          });
         });
   }
 }
