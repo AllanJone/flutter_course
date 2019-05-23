@@ -16,6 +16,7 @@ class Products extends StatelessWidget {
             alignment: MainAxisAlignment.center,
             children: <Widget>[
               FlatButton(
+                color: Theme.of(context).accentColor,
                 child: Text('Display'),
                 onPressed: () => Navigator.push(
                       context,

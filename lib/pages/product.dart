@@ -9,11 +9,20 @@ class ProductPage extends StatelessWidget {
       ),
       body: Center(
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            Text('Go Back'),
-            FlatButton(
-              onPressed: () => Navigator.pop(context),
-              child: Text('Back'),
+            Image.asset('assets/Elizabeth_Olsen.jpg'),
+            Container(
+              padding: EdgeInsets.all(10.0),
+              child: Text('Details'),
+            ),
+            Container(
+              padding: EdgeInsets.all(10.0),
+              child: FlatButton(
+                color: Theme.of(context).accentColor,
+                onPressed: () => Navigator.pop(context),
+                child: Text('Back'),
+              ),
             ),
           ],
         ),
