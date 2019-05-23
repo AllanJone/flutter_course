@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 
 class ProductCreatePage extends StatefulWidget {
+  final Function addProduct;
+
+  ProductCreatePage({this.addProduct});
+
   @override
   _ProductCreatePageState createState() => _ProductCreatePageState();
 }
@@ -14,7 +18,7 @@ class _ProductCreatePageState extends State<ProductCreatePage> {
   Widget build(BuildContext context) {
     return Container(
       margin: EdgeInsets.all(10.0),
-      child: Column(
+      child: ListView(
         children: <Widget>[
           TextField(
             decoration: InputDecoration(
@@ -42,6 +46,22 @@ class _ProductCreatePageState extends State<ProductCreatePage> {
               setState(() {
                 priceValue = double.parse(value);
               });
+            },
+          ),
+          SizedBox(
+            height: 10.0,
+          ),
+          RaisedButton(
+            child: Text('SAVE'),
+            onPressed: () {
+              final Map<String, dynamic> product = {
+                'title': titleValue,
+                'description': descriptionValue,
+                'price': priceValue,
+                'image': 'assets/Elizabeth_Olsen.jpg'
+              };
+              widget.addProduct(product);
+              Navigator.pushReplacementNamed(context, '/');
             },
           ),
         ],
