@@ -3,8 +3,10 @@ import 'package:flutter_course/pages/product.dart';
 
 class Products extends StatelessWidget {
   final List<Map<String, String>> products;
+  final Function deleteProduct;
 
-  Products({@required this.products}) : assert(products != null);
+  Products({@required this.products, this.deleteProduct})
+      : assert(products != null);
 
   Widget _buildProductItem(BuildContext context, int index) {
     return Card(
@@ -18,7 +20,7 @@ class Products extends StatelessWidget {
               FlatButton(
                 color: Theme.of(context).accentColor,
                 child: Text('Display'),
-                onPressed: () => Navigator.push(
+                onPressed: () => Navigator.push<bool>(
                       context,
                       MaterialPageRoute(
                         builder: (BuildContext context) => ProductPage(
@@ -26,7 +28,11 @@ class Products extends StatelessWidget {
                               imageUrl: products[index]['image'],
                             ),
                       ),
-                    ),
+                    ).then((bool value) {
+                      if (value) {
+                        deleteProduct(index);
+                      }
+                    }),
               )
             ],
           ),
