@@ -11,6 +11,15 @@ class Products extends StatelessWidget {
         children: <Widget>[
           Image.asset('assets/Elizabeth_Olsen.jpg'),
           Text(products[index]),
+          ButtonBar(
+            alignment: MainAxisAlignment.center,
+            children: <Widget>[
+              FlatButton(
+                child: Text('Display'),
+                onPressed: () {},
+              )
+            ],
+          ),
         ],
       ),
     );
