@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_course/pages/auth.dart';
+import 'package:flutter_course/pages/product.dart';
 import 'package:flutter_course/pages/products.dart';
-//import 'package:flutter/rendering.dart';
 
 void main() {
-  //debugPaintSizeEnabled = true;
-  //debugPaintBaselinesEnabled = true;
-  //debugPaintPointersEnabled = true;
   runApp(MyApp());
 }
 
@@ -14,16 +11,27 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      //debugShowMaterialGrid: true,
       debugShowCheckedModeBanner: false,
       theme: ThemeData.dark(),
-      // theme: ThemeData(
-      //   primarySwatch: Colors.red,
-      // ),
-      //home: AuthPage(),
       routes: {
         '/': (BuildContext context) => AuthPage(),
         '/admin': (BuildContext context) => ProductsPage(),
+      },
+      onGenerateRoute: (RouteSettings settings) {
+        final List<String> pathElements = settings.name.split('/');
+        if (pathElements[0] != '') {
+          return null;
+        }
+        if (pathElements[1] == 'product') {
+          final int index = int.parse(pathElements[2]);
+          return MaterialPageRoute(
+            builder: (BuildContext context) => ProductPage(
+                  title: products[index]['title'],
+                  imageUrl: products[index]['image'],
+                ),
+          );
+        }
+        return null;
       },
     );
   }
