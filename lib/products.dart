@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_course/pages/product.dart';
 
 class Products extends StatelessWidget {
-  final List<String> products;
+  final List<Map<String, String>> products;
 
   Products({@required this.products}) : assert(products != null);
 
@@ -10,8 +10,8 @@ class Products extends StatelessWidget {
     return Card(
       child: Column(
         children: <Widget>[
-          Image.asset('assets/Elizabeth_Olsen.jpg'),
-          Text(products[index]),
+          Image.asset(products[index]['image']),
+          Text(products[index]['title']),
           ButtonBar(
             alignment: MainAxisAlignment.center,
             children: <Widget>[
@@ -21,7 +21,10 @@ class Products extends StatelessWidget {
                 onPressed: () => Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (BuildContext context) => ProductPage(),
+                        builder: (BuildContext context) => ProductPage(
+                              title: products[index]['title'],
+                              imageUrl: products[index]['image'],
+                            ),
                       ),
                     ),
               )
@@ -49,41 +52,4 @@ class Products extends StatelessWidget {
   Widget build(BuildContext context) {
     return _buildProductList();
   }
-  // @override
-  // Widget build(BuildContext context) {
-  //   Widget productCard = Center(
-  //     child: Text('No products found. Please add some.'),
-  //   );
-  //   if (products.length > 0) {
-  //     productCard = ListView.builder(
-  //       itemBuilder: _buildProductItem,
-  //       itemCount: products.length,
-  //     );
-  //   }
-  //   return productCard;
-  // }
-  // @override
-  // Widget build(BuildContext context) {
-  //   return products.length > 0 ? ListView.builder(
-  //     itemBuilder: _buildProductItem,
-  //     itemCount: products.length,
-  //   ) : Center(child: Text('No products found. Please add some.'),);
-  // }
-  //@override
-  // Widget build(BuildContext context) {
-  //   return ListView(
-  //     children: products
-  //         .map(
-  //           (element) => Card(
-  //                 child: Column(
-  //                   children: <Widget>[
-  //                     Image.asset('assets/Elizabeth_Olsen.jpg'),
-  //                     Text(element),
-  //                   ],
-  //                 ),
-  //               ),
-  //         )
-  //         .toList(),
-  //   );
-  // }
 }

@@ -14,15 +14,19 @@ class ProductManager extends StatefulWidget {
 }
 
 class _ProductManagerState extends State<ProductManager> {
-  List<String> _products = [];
+  List<Map<String, String>> _products = [];
 
   @override
   void initState() {
-    if (widget.startingPoint != null) _products.add(widget.startingPoint);
+    if (widget.startingPoint != null)
+      _products.add({
+        'title': widget.startingPoint,
+        'image': 'assets/Elizabeth_Olsen.jpg'
+      });
     super.initState();
   }
 
-  void _addProduct(String product) {
+  void _addProduct(Map<String, String> product) {
     setState(() {
       _products.add(product);
     });
