@@ -13,7 +13,7 @@ class ProductControl extends StatelessWidget {
         onPressed: () {
           addProduct({
             'title': 'Scarlet Witch',
-            'image': 'assets/Elizabeth_Olsen.jpg'
+            'image': 'assets/food.jpg'
           });
         });
   }

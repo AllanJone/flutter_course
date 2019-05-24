@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_course/pages/product.dart';
-import 'package:flutter_course/pages/products.dart';
-import 'package:flutter_course/pages/products_admin.dart';
+//import 'package:flutter/rendering.dart';
+
+import './pages/auth.dart';
+import './pages/product.dart';
+import './pages/products.dart';
+import './pages/products_admin.dart';
 
 void main() {
+  //debugPaintSizeEnabled = true;
   runApp(MyApp());
 }
 
@@ -33,7 +37,8 @@ class _MyAppState extends State<MyApp> {
       debugShowCheckedModeBanner: false,
       theme: ThemeData.dark(),
       routes: {
-        '/': (BuildContext context) => ProductsPage(
+        '/': (BuildContext context) => AuthPage(),
+        '/products': (BuildContext context) => ProductsPage(
               products: _products,
             ),
         '/admin': (BuildContext context) => ProductsAdminPage(
