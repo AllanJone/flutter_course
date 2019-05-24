@@ -31,7 +31,7 @@ class Products extends StatelessWidget {
                 Container(
                   padding: EdgeInsets.symmetric(horizontal: 6.0, vertical: 2.5),
                   decoration: BoxDecoration(
-                    color: Theme.of(context).accentColor,
+                    color: Colors.deepPurple,
                     borderRadius: BorderRadius.circular(5.0),
                   ),
                   child: Text(
@@ -54,12 +54,16 @@ class Products extends StatelessWidget {
           ButtonBar(
             alignment: MainAxisAlignment.center,
             children: <Widget>[
-              FlatButton(
-                  //color: Theme.of(context).accentColor,
-                  textColor: Colors.black,
-                  child: Text('Display'),
+              IconButton(
+                  icon: Icon(Icons.info),
+                  color: Colors.deepPurple,
                   onPressed: () => Navigator.pushNamed<bool>(
-                      context, '/product/' + index.toString()))
+                      context, '/product/' + index.toString())),
+              IconButton(
+                icon: Icon(Icons.favorite_border),
+                color: Colors.red,
+                onPressed: () {},
+              ),
             ],
           ),
         ],

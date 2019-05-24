@@ -28,6 +28,12 @@ class ProductsPage extends StatelessWidget {
       ),
       appBar: AppBar(
         title: Text('Product List'),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.format_align_center),
+            onPressed: () {},
+          ),
+        ],
       ),
       body: ProductManager(products: products),
     );
