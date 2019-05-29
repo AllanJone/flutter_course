@@ -64,9 +64,13 @@ class _ProductCreatePageState extends State<ProductCreatePage> {
 
   @override
   Widget build(BuildContext context) {
+    final deviceWidth = MediaQuery.of(context).size.width;
+    final targetWidth = deviceWidth > 550.0 ? 500 : deviceWidth * 0.95;
+    final targetPadding = deviceWidth - targetWidth;
     return Container(
       margin: EdgeInsets.all(10.0),
       child: ListView(
+        padding: EdgeInsets.symmetric(horizontal: targetPadding / 2),
         children: <Widget>[
           _buildTitleTextField(),
           _buildDescriptionTextField(),
@@ -78,6 +82,14 @@ class _ProductCreatePageState extends State<ProductCreatePage> {
             child: Text('SAVE'),
             onPressed: _submitForm,
           ),
+          // GestureDetector(
+          //   onTap: _submitForm,
+          //   child: Container(
+          //     color: Colors.lightBlue,
+          //     padding: EdgeInsets.all(5.0),
+          //     child: Text('My Button'),
+          //   ),
+          // ),
         ],
       ),
     );

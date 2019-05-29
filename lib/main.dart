@@ -35,7 +35,12 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      theme: ThemeData.dark(),
+      theme: ThemeData(
+        brightness: Brightness.dark,
+        //primarySwatch: Colors.deepOrange,
+        //accentColor: Colors.deepPurple,
+        //buttonTheme: ButtonThemeData(textTheme: ButtonTextTheme.accent,),
+      ),
       routes: {
         '/': (BuildContext context) => AuthPage(),
         '/products': (BuildContext context) => ProductsPage(
