@@ -59,12 +59,12 @@ class _ProductCreatePageState extends State<ProductCreatePage> {
       onSaved: (String value) {
         print('Price saved');
         setState(() {
-          _priceValue = double.parse(value);
+          _priceValue = double.parse(value.replaceFirst(RegExp(r','), '.'));
         });
       },
       validator: (String value) {
         if (value.isEmpty ||
-            !RegExp(r'^(?:[1-9]\d*|0)?(?:\.\d+)?$').hasMatch(value))
+            !RegExp(r'^(?:[1-9]\d*|0)?(?:[.,]\d+)?$').hasMatch(value))
           return 'Description is required and should be a number';
       },
     );
