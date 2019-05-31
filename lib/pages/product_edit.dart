@@ -1,15 +1,19 @@
 import 'package:flutter/material.dart';
 
-class ProductCreatePage extends StatefulWidget {
+class ProductEditPage extends StatefulWidget {
   final Function addProduct;
+  final Function updateProduct;
+  final Map<String, dynamic> product;
+  final int productIndex;
 
-  ProductCreatePage({this.addProduct});
+  ProductEditPage(
+      {this.addProduct, this.updateProduct, this.product, this.productIndex});
 
   @override
-  _ProductCreatePageState createState() => _ProductCreatePageState();
+  _ProductEditPageState createState() => _ProductEditPageState();
 }
 
-class _ProductCreatePageState extends State<ProductCreatePage> {
+class _ProductEditPageState extends State<ProductEditPage> {
   final Map<String, dynamic> _formData = {
     'title': null,
     'description': null,
@@ -23,6 +27,8 @@ class _ProductCreatePageState extends State<ProductCreatePage> {
       decoration: InputDecoration(
         labelText: 'Product Title',
       ),
+      initialValue:
+          widget.product == null ? '' : widget.product['title'].toString(),
       onSaved: (String value) {
         print('Title saved');
         _formData['title'] = value;
@@ -40,6 +46,9 @@ class _ProductCreatePageState extends State<ProductCreatePage> {
     return TextFormField(
       decoration: InputDecoration(labelText: 'Product Description'),
       maxLines: 2,
+      initialValue: widget.product == null
+          ? ''
+          : widget.product['description'].toString(),
       onSaved: (String value) {
         print('Description saved');
         _formData['description'] = value;
@@ -55,6 +64,8 @@ class _ProductCreatePageState extends State<ProductCreatePage> {
     return TextFormField(
       decoration: InputDecoration(labelText: 'Product Price'),
       keyboardType: TextInputType.number,
+      initialValue:
+          widget.product == null ? '' : widget.product['price'].toString(),
       onSaved: (String value) {
         print('Price saved');
         _formData['price'] =
@@ -73,7 +84,11 @@ class _ProductCreatePageState extends State<ProductCreatePage> {
       return;
     }
     _formkey.currentState.save();
-    widget.addProduct(_formData);
+    if (widget.product == null) {
+      widget.addProduct(_formData);
+    } else {
+      widget.updateProduct(widget.productIndex, _formData);
+    }
     Navigator.pushReplacementNamed(context, '/products');
   }
 
@@ -83,7 +98,7 @@ class _ProductCreatePageState extends State<ProductCreatePage> {
     final targetWidth = deviceWidth > 550.0 ? 500 : deviceWidth * 0.95;
     final targetPadding = deviceWidth - targetWidth;
 
-    return GestureDetector(
+    final Widget pageContent = GestureDetector(
       onTap: () {
         FocusScope.of(context).requestFocus(FocusNode());
       },
@@ -117,5 +132,14 @@ class _ProductCreatePageState extends State<ProductCreatePage> {
         ),
       ),
     );
+
+    return widget.product == null
+        ? pageContent
+        : Scaffold(
+            appBar: AppBar(
+              title: Text('Edit Product'),
+            ),
+            body: pageContent,
+          );
   }
 }
