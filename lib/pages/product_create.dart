@@ -10,9 +10,12 @@ class ProductCreatePage extends StatefulWidget {
 }
 
 class _ProductCreatePageState extends State<ProductCreatePage> {
-  String _titleValue = '';
-  String _descriptionValue = '';
-  double _priceValue = 0.0;
+  final Map<String, dynamic> _formData = {
+    'title': null,
+    'description': null,
+    'price': null,
+    'image': 'assets/food.jpg'
+  };
   final GlobalKey<FormState> _formkey = GlobalKey<FormState>();
 
   Widget _buildTitleTextField() {
@@ -22,9 +25,7 @@ class _ProductCreatePageState extends State<ProductCreatePage> {
       ),
       onSaved: (String value) {
         print('Title saved');
-        setState(() {
-          _titleValue = value;
-        });
+        _formData['title'] = value;
       },
       //autovalidate: true,
       validator: (String value) {
@@ -41,9 +42,7 @@ class _ProductCreatePageState extends State<ProductCreatePage> {
       maxLines: 2,
       onSaved: (String value) {
         print('Description saved');
-        setState(() {
-          _descriptionValue = value;
-        });
+        _formData['description'] = value;
       },
       validator: (String value) {
         if (value.isEmpty || value.length < 10)
@@ -58,9 +57,8 @@ class _ProductCreatePageState extends State<ProductCreatePage> {
       keyboardType: TextInputType.number,
       onSaved: (String value) {
         print('Price saved');
-        setState(() {
-          _priceValue = double.parse(value.replaceFirst(RegExp(r','), '.'));
-        });
+        _formData['price'] =
+            double.parse(value.replaceFirst(RegExp(r','), '.'));
       },
       validator: (String value) {
         if (value.isEmpty ||
@@ -75,13 +73,7 @@ class _ProductCreatePageState extends State<ProductCreatePage> {
       return;
     }
     _formkey.currentState.save();
-    final Map<String, dynamic> product = {
-      'title': _titleValue,
-      'description': _descriptionValue,
-      'price': _priceValue,
-      'image': 'assets/food.jpg'
-    };
-    widget.addProduct(product);
+    widget.addProduct(_formData);
     Navigator.pushReplacementNamed(context, '/products');
   }
 
@@ -91,32 +83,37 @@ class _ProductCreatePageState extends State<ProductCreatePage> {
     final targetWidth = deviceWidth > 550.0 ? 500 : deviceWidth * 0.95;
     final targetPadding = deviceWidth - targetWidth;
 
-    return Container(
-      margin: EdgeInsets.all(10.0),
-      child: Form(
-        key: _formkey,
-        child: ListView(
-          padding: EdgeInsets.symmetric(horizontal: targetPadding / 2),
-          children: <Widget>[
-            _buildTitleTextField(),
-            _buildDescriptionTextField(),
-            _buildPriceTextField(),
-            SizedBox(
-              height: 10.0,
-            ),
-            RaisedButton(
-              child: Text('SAVE'),
-              onPressed: _submitForm,
-            ),
-            // GestureDetector(
-            //   onTap: _submitForm,
-            //   child: Container(
-            //     color: Colors.lightBlue,
-            //     padding: EdgeInsets.all(5.0),
-            //     child: Text('My Button'),
-            //   ),
-            // ),
-          ],
+    return GestureDetector(
+      onTap: () {
+        FocusScope.of(context).requestFocus(FocusNode());
+      },
+      child: Container(
+        margin: EdgeInsets.all(10.0),
+        child: Form(
+          key: _formkey,
+          child: ListView(
+            padding: EdgeInsets.symmetric(horizontal: targetPadding / 2),
+            children: <Widget>[
+              _buildTitleTextField(),
+              _buildDescriptionTextField(),
+              _buildPriceTextField(),
+              SizedBox(
+                height: 10.0,
+              ),
+              RaisedButton(
+                child: Text('SAVE'),
+                onPressed: _submitForm,
+              ),
+              // GestureDetector(
+              //   onTap: _submitForm,
+              //   child: Container(
+              //     color: Colors.lightBlue,
+              //     padding: EdgeInsets.all(5.0),
+              //     child: Text('My Button'),
+              //   ),
+              // ),
+            ],
+          ),
         ),
       ),
     );
