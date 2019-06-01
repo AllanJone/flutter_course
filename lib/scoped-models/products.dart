@@ -1,7 +1,7 @@
 import 'package:flutter_course/models/product.dart';
 import 'package:scoped_model/scoped_model.dart';
 
-class ProductsModel extends Model {
+mixin ProductsModel on Model {
   List<Product> _products = [];
   int _seletedProductIndex;
   bool _showFavourites = false;
