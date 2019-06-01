@@ -95,6 +95,42 @@ class _ProductEditPageState extends State<ProductEditPage> {
     );
   }
 
+  Widget _buildPageContent(BuildContext context) {
+    final deviceWidth = MediaQuery.of(context).size.width;
+    final targetWidth = deviceWidth > 550.0 ? 500 : deviceWidth * 0.95;
+    final targetPadding = deviceWidth - targetWidth;
+
+    return Container(
+      margin: EdgeInsets.all(10.0),
+      child: Form(
+        key: _formkey,
+        child: ListView(
+          padding: EdgeInsets.symmetric(horizontal: targetPadding / 2),
+          children: <Widget>[
+            _buildTitleTextField(),
+            _buildDescriptionTextField(),
+            _buildPriceTextField(),
+            SizedBox(
+              height: 10.0,
+            ),
+            RaisedButton(
+              child: Text('SAVE'),
+              onPressed: _submitForm,
+            ),
+            // GestureDetector(
+            //   onTap: _submitForm,
+            //   child: Container(
+            //     color: Colors.lightBlue,
+            //     padding: EdgeInsets.all(5.0),
+            //     child: Text('My Button'),
+            //   ),
+            // ),
+          ],
+        ),
+      ),
+    );
+  }
+
   void _submitForm() {
     if (!_formkey.currentState.validate()) {
       return;
@@ -110,43 +146,11 @@ class _ProductEditPageState extends State<ProductEditPage> {
 
   @override
   Widget build(BuildContext context) {
-    final deviceWidth = MediaQuery.of(context).size.width;
-    final targetWidth = deviceWidth > 550.0 ? 500 : deviceWidth * 0.95;
-    final targetPadding = deviceWidth - targetWidth;
-
     final Widget pageContent = GestureDetector(
       onTap: () {
         FocusScope.of(context).requestFocus(FocusNode());
       },
-      child: Container(
-        margin: EdgeInsets.all(10.0),
-        child: Form(
-          key: _formkey,
-          child: ListView(
-            padding: EdgeInsets.symmetric(horizontal: targetPadding / 2),
-            children: <Widget>[
-              _buildTitleTextField(),
-              _buildDescriptionTextField(),
-              _buildPriceTextField(),
-              SizedBox(
-                height: 10.0,
-              ),
-              RaisedButton(
-                child: Text('SAVE'),
-                onPressed: _submitForm,
-              ),
-              // GestureDetector(
-              //   onTap: _submitForm,
-              //   child: Container(
-              //     color: Colors.lightBlue,
-              //     padding: EdgeInsets.all(5.0),
-              //     child: Text('My Button'),
-              //   ),
-              // ),
-            ],
-          ),
-        ),
-      ),
+      child: _buildPageContent(context),
     );
 
     return widget.product == null
