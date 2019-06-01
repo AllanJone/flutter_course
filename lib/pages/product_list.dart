@@ -34,6 +34,7 @@ class ProductListPage extends StatelessWidget {
                 if (direction == DismissDirection.endToStart) {
                   model.selectProduct(index);
                   model.deleteProduct();
+                  model.selectProduct(null);
                 } else if (direction == DismissDirection.startToEnd) {
                   print('Swiped start to end');
                 } else {

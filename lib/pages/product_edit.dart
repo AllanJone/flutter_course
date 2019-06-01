@@ -138,7 +138,7 @@ class _ProductEditPageState extends State<ProductEditPage> {
   }
 
   void _submitForm(
-      Function addProduct, Function updateProduct, Function setSelectedProduct,
+      Function addProduct, Function updateProduct, Function selectProduct,
       [int selectedProductIndex]) {
     if (!_formkey.currentState.validate()) {
       return;
@@ -152,7 +152,7 @@ class _ProductEditPageState extends State<ProductEditPage> {
           _formData['price'], _formData['image']);
     }
     Navigator.pushReplacementNamed(context, '/products')
-        .then((_) => setSelectedProduct(null));
+        .then((_) => selectProduct(null));
   }
 
   @override
