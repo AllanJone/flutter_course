@@ -7,7 +7,7 @@ import 'package:scoped_model/scoped_model.dart';
 class Products extends StatelessWidget {
   Widget _buildProductList(List<Product> products) {
     Widget productCards = Center(
-      child: Text('No products found. Please add some.'),
+      child: Text('No products found.'),
     );
     if (products != null && products.length > 0) {
       productCards = ListView.builder(
