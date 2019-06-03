@@ -9,9 +9,12 @@ mixin ConnectedProductsModel on Model {
   List<Product> _products = [];
   int _selProductIndex;
   User _autenticatedUser;
+  bool _isLoading = false;
 
-  void addProduct(
+  Future<Null> addProduct(
       String title, String description, double price, String image) {
+    _isLoading = true;
+    notifyListeners();
     final Map<String, dynamic> productData = {
       'title': title,
       'description': description,
@@ -21,7 +24,7 @@ mixin ConnectedProductsModel on Model {
       'userEmail': _autenticatedUser.email,
       'userId': _autenticatedUser.id
     };
-    http
+    return http
         .post(
             'https://flutter-course-products-c890a.firebaseio.com/products.json',
             body: json.encode(productData))
@@ -36,6 +39,7 @@ mixin ConnectedProductsModel on Model {
           userEmail: _autenticatedUser.email,
           userId: _autenticatedUser.id);
       _products.add(newProduct);
+      _isLoading = false;
       notifyListeners();
     });
   }
@@ -71,32 +75,68 @@ mixin ProductsModel on ConnectedProductsModel {
     return _showFavourites;
   }
 
-  void updateProduct(
+  Future<Null> updateProduct(
       String title, String description, double price, String image) {
-    final Product updatedProduct = Product(
-        id: selectedProduct.id,
-        title: title,
-        description: description,
-        price: price,
-        image: image,
-        userEmail: selectedProduct.userEmail,
-        userId: selectedProduct.userId);
-    _products[_selProductIndex] = updatedProduct;
+    _isLoading = true;
     notifyListeners();
+    final Map<String, dynamic> updateData = {
+      'title': title,
+      'description': description,
+      'price': price,
+      'image':
+          'http://wallpaperswide.com/download/aerated_chocolate-wallpaper-1920x1080.jpg',
+      'userEmail': selectedProduct.userEmail,
+      'userId': selectedProduct.userId
+    };
+    return http
+        .put(
+            'https://flutter-course-products-c890a.firebaseio.com/products/${selectedProduct.id}.json',
+            body: json.encode(updateData))
+        .then((http.Response respone) {
+      _isLoading = false;
+      final Product updatedProduct = Product(
+          id: selectedProduct.id,
+          title: title,
+          description: description,
+          price: price,
+          image: image,
+          userEmail: selectedProduct.userEmail,
+          userId: selectedProduct.userId);
+      _products[_selProductIndex] = updatedProduct;
+      notifyListeners();
+    });
   }
 
-  void deleteProduct() {
+  Future<Null> deleteProduct() {
+    _isLoading = true;
+    final deletedProductId = selectedProduct.id;
     _products.removeAt(_selProductIndex);
+    _selProductIndex = null;
     notifyListeners();
+    return http
+        .delete(
+            'https://flutter-course-products-c890a.firebaseio.com/products/$deletedProductId.json')
+        .then((http.Response response) {
+      _isLoading = false;
+      notifyListeners();
+    });
   }
 
   void fetchProducts() {
+    _isLoading = true;
+    notifyListeners();
     http
         .get(
             'https://flutter-course-products-c890a.firebaseio.com/products.json')
         .then((http.Response response) {
+      _isLoading = false;
       final List<Product> fetchedProductList = [];
       final Map<String, dynamic> productListData = json.decode(response.body);
+      if (productListData == null) {
+        _isLoading = false;
+        notifyListeners();
+        return;
+      }
       productListData.forEach((String productId, dynamic productData) {
         final Product product = Product(
             id: productId,
@@ -109,6 +149,7 @@ mixin ProductsModel on ConnectedProductsModel {
         fetchedProductList.add(product);
       });
       _products = fetchedProductList;
+      _isLoading = false;
       notifyListeners();
     });
   }
@@ -144,5 +185,11 @@ mixin ProductsModel on ConnectedProductsModel {
 mixin UserModel on ConnectedProductsModel {
   void login(String email, String password) {
     _autenticatedUser = User(id: 'test', email: email, password: password);
+  }
+}
+
+mixin UtilityModel on ConnectedProductsModel {
+  bool get isLoading {
+    return _isLoading;
   }
 }
