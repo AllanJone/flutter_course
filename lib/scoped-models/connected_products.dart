@@ -1,6 +1,9 @@
+import 'dart:convert';
+
 import 'package:flutter_course/models/product.dart';
 import 'package:flutter_course/models/user.dart';
 import 'package:scoped_model/scoped_model.dart';
+import 'package:http/http.dart' as http;
 
 mixin ConnectedProductsModel on Model {
   List<Product> _products = [];
@@ -9,15 +12,30 @@ mixin ConnectedProductsModel on Model {
 
   void addProduct(
       String title, String description, double price, String image) {
-    final Product newProduct = Product(
-        title: title,
-        description: description,
-        price: price,
-        image: image,
-        userEmail: _autenticatedUser.email,
-        userId: _autenticatedUser.id);
-    _products.add(newProduct);
-    notifyListeners();
+    final Map<String, dynamic> productData = {
+      'title': title,
+      'description': description,
+      'price': price,
+      'image':
+          'http://wallpaperswide.com/download/aerated_chocolate-wallpaper-1920x1080.jpg'
+    };
+    http
+        .post(
+            'https://flutter-course-products-c890a.firebaseio.com/products.json',
+            body: json.encode(productData))
+        .then((http.Response response) {
+      final Map<String, dynamic> responseData = json.decode(response.body);
+      final Product newProduct = Product(
+          id: responseData['name'],
+          title: title,
+          description: description,
+          price: price,
+          image: image,
+          userEmail: _autenticatedUser.email,
+          userId: _autenticatedUser.id);
+      _products.add(newProduct);
+      notifyListeners();
+    });
   }
 }
 
@@ -54,6 +72,7 @@ mixin ProductsModel on ConnectedProductsModel {
   void updateProduct(
       String title, String description, double price, String image) {
     final Product updatedProduct = Product(
+        id: selectedProduct.id,
         title: title,
         description: description,
         price: price,
@@ -69,9 +88,17 @@ mixin ProductsModel on ConnectedProductsModel {
     notifyListeners();
   }
 
+  void fetchProducts() {
+    http
+        .post(
+            'https://flutter-course-products-c890a.firebaseio.com/products.json')
+        .then((http.Response response) {});
+  }
+
   void toggleProductFavouriteStatus() {
     final bool newFavouriteStatus = !selectedProduct.isFavourite;
     final Product updatedProduct = Product(
+        id: selectedProduct.id,
         title: selectedProduct.title,
         description: selectedProduct.description,
         price: selectedProduct.price,
