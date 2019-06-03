@@ -17,7 +17,9 @@ mixin ConnectedProductsModel on Model {
       'description': description,
       'price': price,
       'image':
-          'http://wallpaperswide.com/download/aerated_chocolate-wallpaper-1920x1080.jpg'
+          'http://wallpaperswide.com/download/aerated_chocolate-wallpaper-1920x1080.jpg',
+      'userEmail': _autenticatedUser.email,
+      'userId': _autenticatedUser.id
     };
     http
         .post(
@@ -90,9 +92,25 @@ mixin ProductsModel on ConnectedProductsModel {
 
   void fetchProducts() {
     http
-        .post(
+        .get(
             'https://flutter-course-products-c890a.firebaseio.com/products.json')
-        .then((http.Response response) {});
+        .then((http.Response response) {
+      final List<Product> fetchedProductList = [];
+      final Map<String, dynamic> productListData = json.decode(response.body);
+      productListData.forEach((String productId, dynamic productData) {
+        final Product product = Product(
+            id: productId,
+            title: productData['title'],
+            description: productData['description'],
+            price: productData['price'],
+            image: productData['image'],
+            userEmail: productData['userEmail'],
+            userId: productData['userId']);
+        fetchedProductList.add(product);
+      });
+      _products = fetchedProductList;
+      notifyListeners();
+    });
   }
 
   void toggleProductFavouriteStatus() {

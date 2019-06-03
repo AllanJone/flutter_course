@@ -3,25 +3,20 @@ import 'package:flutter_course/scoped-models/main.dart';
 import 'package:flutter_course/widgets/products/products.dart';
 import 'package:scoped_model/scoped_model.dart';
 
-class ProductsPage extends StatelessWidget {
-  Widget _buildSideDrawer(BuildContext context) {
-    return Drawer(
-      child: Column(
-        children: <Widget>[
-          AppBar(
-            automaticallyImplyLeading: false,
-            title: Text('Choose'),
-          ),
-          ListTile(
-            leading: Icon(Icons.edit),
-            title: Text('Manage Products'),
-            onTap: () {
-              Navigator.pushReplacementNamed(context, '/admin');
-            },
-          ),
-        ],
-      ),
-    );
+class ProductsPage extends StatefulWidget {
+  final MainModel model;
+
+  ProductsPage(this.model);
+
+  @override
+  _ProductsPageState createState() => _ProductsPageState();
+}
+
+class _ProductsPageState extends State<ProductsPage> {
+  @override
+  void initState() {
+    widget.model.fetchProducts();
+    super.initState();
   }
 
   @override
@@ -46,6 +41,26 @@ class ProductsPage extends StatelessWidget {
         ],
       ),
       body: Products(),
+    );
+  }
+
+  Widget _buildSideDrawer(BuildContext context) {
+    return Drawer(
+      child: Column(
+        children: <Widget>[
+          AppBar(
+            automaticallyImplyLeading: false,
+            title: Text('Choose'),
+          ),
+          ListTile(
+            leading: Icon(Icons.edit),
+            title: Text('Manage Products'),
+            onTap: () {
+              Navigator.pushReplacementNamed(context, '/admin');
+            },
+          ),
+        ],
+      ),
     );
   }
 }
